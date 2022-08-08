@@ -1,7 +1,7 @@
-import DISPLAY from '~/constants/Display'
+import { DISPLAY } from '~/constants'
 
 
-export class Display {
+export default class Display {
   private screen : HTMLCanvasElement | null
   private context : CanvasRenderingContext2D
   private frameBuffer : number[][]

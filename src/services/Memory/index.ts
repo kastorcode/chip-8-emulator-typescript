@@ -1,7 +1,7 @@
-import MEMORY from '~/constants/Memory'
+import { MEMORY } from '~/constants'
 
 
-export class Memory {
+export default class Memory {
   private memory : Uint8Array
 
 
