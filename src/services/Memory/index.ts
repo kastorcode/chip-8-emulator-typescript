@@ -2,7 +2,7 @@ import { MEMORY } from '~/constants'
 
 
 export default class Memory {
-  private memory : Uint8Array
+  public memory : Uint8Array
 
 
   constructor () {

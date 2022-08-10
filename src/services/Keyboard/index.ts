@@ -30,12 +30,12 @@ export default class Keyboard {
   }
 
 
-  public isKeydown (keyIndex) {
+  private isKeydown (keyIndex) {
     return this.keys[keyIndex]
   }
 
 
-  public hasKeydown () {
+  private hasKeydown () {
     return this.keys.findIndex(key => key) != -1
   }
 }
