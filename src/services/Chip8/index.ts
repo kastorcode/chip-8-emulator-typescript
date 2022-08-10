@@ -1,4 +1,4 @@
-import { CHAR_SET, MEMORY } from '~/constants'
+import { CHAR_SET, MEMORY, REGISTERS } from '~/constants'
 
 import { Display, Keyboard, Memory, Registers } from '~/services'
 
@@ -6,7 +6,7 @@ import { Display, Keyboard, Memory, Registers } from '~/services'
 export default class Chip8 {
   public display : Display
   private memory : Memory
-  private registers : Registers
+  public registers : Registers
   private keyboard : Keyboard
 
 
@@ -20,7 +20,7 @@ export default class Chip8 {
   }
 
 
-  public sleep (ms = 1000) {
+  public sleep (ms = REGISTERS.TIMER_60_HZ) {
     return new Promise(resolve => setTimeout(resolve, ms))
   }
 

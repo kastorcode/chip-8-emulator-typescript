@@ -4,8 +4,8 @@ import { MEMORY, REGISTERS } from '~/constants'
 export default class Registers {
   private V : Uint8Array
   private I : number
-  private delayTimer : number
-  private soundTimer : number
+  public DT : number
+  private ST : number
   private PC : number
   private SP : number
   private stack : Uint16Array
@@ -15,8 +15,8 @@ export default class Registers {
     console.log('Create a new Registers')
     this.V = new Uint8Array(REGISTERS.TOTAL)
     this.I = 0
-    this.delayTimer = 0
-    this.soundTimer = 0
+    this.DT = 0
+    this.ST = 0
     this.PC = MEMORY.START_PROGRAMS
     this.SP = -1
     this.stack = new Uint16Array(REGISTERS.STACK_DEEP)
@@ -27,8 +27,8 @@ export default class Registers {
   private reset () {
     this.V.fill(0)
     this.I = 0
-    this.delayTimer = 0
-    this.soundTimer = 0
+    this.DT = 0
+    this.ST = 0
     this.PC = MEMORY.START_PROGRAMS
     this.SP = -1
     this.stack.fill(0)
