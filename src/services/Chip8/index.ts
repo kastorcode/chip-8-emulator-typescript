@@ -1,13 +1,14 @@
 import { CHAR_SET, MEMORY, REGISTERS } from '~/constants'
 
-import { Display, Keyboard, Memory, Registers } from '~/services'
+import { Display, Keyboard, Memory, Registers, SoundCard } from '~/services'
 
 
 export default class Chip8 {
-  public display : Display
   private memory : Memory
   public registers : Registers
   private keyboard : Keyboard
+  public soundCard : SoundCard
+  private display : Display
 
 
   constructor () {
@@ -16,6 +17,7 @@ export default class Chip8 {
     this.loadCharSet()
     this.registers = new Registers()
     this.keyboard = new Keyboard()
+    this.soundCard = new SoundCard()
     this.display = new Display(this.memory.memory)
   }
 

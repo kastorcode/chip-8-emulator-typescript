@@ -50,7 +50,7 @@ export default class Display {
   }
 
 
-  public drawSprite (h : number, w : number, sprite : number, rows : number) {
+  private drawSprite (h : number, w : number, sprite : number, rows : number) {
     for (let y = 0; y < rows; y++) {
       const line = this.memory[sprite + y]
       for (let x = 0; x < CHAR_SET.WIDTH; x++) {

@@ -3,6 +3,7 @@ import Display from './Display'
 import Keyboard from './Keyboard'
 import Memory from './Memory'
 import Registers from './Registers'
+import SoundCard from './SoundCard'
 
 
 export {
@@ -10,5 +11,6 @@ export {
   Display,
   Keyboard,
   Memory,
-  Registers
+  Registers,
+  SoundCard
 }

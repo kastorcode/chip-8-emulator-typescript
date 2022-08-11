@@ -5,7 +5,7 @@ export default class Registers {
   private V : Uint8Array
   private I : number
   public DT : number
-  private ST : number
+  public ST : number
   private PC : number
   private SP : number
   private stack : Uint16Array
