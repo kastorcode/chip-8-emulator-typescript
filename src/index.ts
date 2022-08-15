@@ -24,4 +24,5 @@ async function runChip8 () {
 }
 
 
+document['chip8'] = chip8
 runChip8()

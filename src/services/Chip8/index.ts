@@ -1,6 +1,6 @@
 import { CHAR_SET, MEMORY, REGISTERS } from '~/constants'
 
-import { Display, Keyboard, Memory, Registers, SoundCard } from '~/services'
+import { Disassembler, Display, Keyboard, Memory, Registers, SoundCard } from '~/services'
 
 
 export default class Chip8 {
@@ -8,6 +8,7 @@ export default class Chip8 {
   public registers : Registers
   private keyboard : Keyboard
   public soundCard : SoundCard
+  private disassembler : Disassembler
   private display : Display
 
 
@@ -18,6 +19,7 @@ export default class Chip8 {
     this.registers = new Registers()
     this.keyboard = new Keyboard()
     this.soundCard = new SoundCard()
+    this.disassembler = new Disassembler()
     this.display = new Display(this.memory.memory)
   }
 
