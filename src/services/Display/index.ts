@@ -20,7 +20,7 @@ export default class Display {
   }
 
 
-  private reset () {
+  public reset () {
     for (let h = 0; h < DISPLAY.HEIGHT; h++) {
       this.frameBuffer.push([])
       for (let w = 0; w < DISPLAY.WIDTH; w++) {

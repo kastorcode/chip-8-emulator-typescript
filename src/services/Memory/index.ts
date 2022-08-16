@@ -29,6 +29,13 @@ export default class Memory {
   }
 
 
+  private getOpcode (index : number) {
+    const highByte = this.getMemory(index)
+    const lowByte = this.getMemory(index + 1)
+    return (highByte << 8) | lowByte
+  }
+
+
   private assertMemory (index : number) {
     console.assert(
       index > -1 && index < MEMORY.SIZE,
