@@ -2,8 +2,8 @@ import { MEMORY, REGISTERS } from '~/constants'
 
 
 export default class Registers {
-  private V : Uint8Array
-  private I : number
+  public V : Uint8Array
+  public I : number
   public DT : number
   public ST : number
   public PC : number
@@ -35,14 +35,14 @@ export default class Registers {
   }
 
 
-  private stackPush (value : number) {
+  public stackPush (value : number) {
     this.SP++
     this.assertStackOverflow()
     this.stack[this.SP] = value
   }
 
 
-  private stackPop () {
+  public stackPop () {
     const value = this.stack[this.SP]
     this.SP--
     this.assertStackUnderflow()
