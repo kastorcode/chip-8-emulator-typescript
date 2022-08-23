@@ -1,4 +1,4 @@
-import { CHAR_SET, MEMORY, REGISTERS } from '~/constants'
+import { CHAR_SET, DISPLAY, MEMORY, REGISTERS } from '~/constants'
 
 import { Disassembler, Display, Keyboard, Memory, Registers, SoundCard } from '~/services'
 
@@ -45,12 +45,8 @@ export default class Chip8 {
   }
 
 
-  private execute (opcode : number) {
+  private async execute (opcode : number) {
     const { instruction, args } = this.disassembler.disassemble(opcode)
-    //
-    console.log('instruction: ', instruction)
-    console.log('args: ', args)
-    //
     switch (instruction.id) {
       case 'CLS': {
         this.display.reset()
@@ -144,6 +140,84 @@ export default class Chip8 {
       }
       case 'LD_I_ADDR': {
         this.registers.I = args[0]
+        break
+      }
+      case 'JP_V0_ADDR': {
+        this.registers.PC = args[0] + this.registers.V[0]
+        break
+      }
+      case 'RND_VX_KK': {
+        this.registers.V[args[0]] = ((Math.floor(Math.random() * 255)) & args[1])
+        break
+      }
+      case 'DRW_VX_VY_N': {
+        this.registers.V[0x0f] = this.display.drawSprite(
+          this.registers.V[args[1]], this.registers.V[args[0]], this.registers.I, args[2]
+        )
+        break
+      }
+      case 'SKP_VX': {
+        if (this.keyboard.isKeydown(this.registers.V[args[0]])) {
+          this.registers.PC += 2
+        }
+        break
+      }
+      case 'SKNP_VX': {
+        if (!this.keyboard.isKeydown(this.registers.V[args[0]])) {
+          this.registers.PC += 2
+        }
+        break
+      }
+      case 'LD_VX_DT': {
+        this.registers.V[args[0]] = this.registers.DT
+        break
+      }
+      case 'LD_VX_K': {
+        let keyPressed = -1
+        while (keyPressed == -1) {
+          keyPressed = this.keyboard.hasKeydown()
+          await this.sleep()
+        }
+        this.registers.V[args[0]] = keyPressed
+        break
+      }
+      case 'LD_DT_VX': {
+        this.registers.DT = this.registers.V[args[0]]
+        break
+      }
+      case 'LD_ST_VX': {
+        this.registers.ST = this.registers.V[args[0]]
+        break
+      }
+      case 'ADD_I_VX': {
+        this.registers.I += this.registers.V[args[0]]
+        break
+      }
+      case 'LD_F_VX': {
+        this.registers.I = this.registers.V[args[0]] * DISPLAY.SPRITE_HEIGHT
+        break
+      }
+      case 'LD_B_VX': {
+        let x = this.registers.V[args[0]]
+        const hundreds = Math.floor(x / 100)
+        x = x - hundreds * 100
+        const tens = Math.floor(x / 10)
+        const ones = Math.floor(x - tens * 10)
+        this.memory.setMemory(this.registers.I, hundreds)
+        this.memory.setMemory(this.registers.I + 1, tens)
+        this.memory.setMemory(this.registers.I + 2, ones)
+        break
+      }
+      case 'LD_I_VX': {
+        for (let i = 0; i <= args[0]; i++) {
+          this.memory.setMemory(this.registers.I + i, this.registers.V[i])
+        }
+        break
+      }
+      case 'LD_VX_I': {
+        for (let i = 0; i <= args[0]; i++) {
+          this.registers.V[i] = this.memory.getMemory(this.registers.I + i)
+        }
         break
       }
       default: {

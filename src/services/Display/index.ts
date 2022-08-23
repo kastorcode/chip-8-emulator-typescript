@@ -50,14 +50,25 @@ export default class Display {
   }
 
 
-  private drawSprite (h : number, w : number, sprite : number, rows : number) {
+  public drawSprite (h : number, w : number, sprite : number, rows : number) {
+    let pixelCollision = 0
     for (let y = 0; y < rows; y++) {
       const line = this.memory[sprite + y]
       for (let x = 0; x < CHAR_SET.WIDTH; x++) {
         const bitToCheck = 0b10000000 >> x
         const value = line & bitToCheck
-        this.drawPixel(h + y, w + x, value)
+        if (value === 0) {
+          continue
+        }
+        const pixelHeight = ((h + y) % DISPLAY.HEIGHT)
+        const pixelWidth = ((w + x) % DISPLAY.WIDTH)
+        if (this.frameBuffer[pixelHeight][pixelWidth] === 1) {
+          pixelCollision = 1
+        }
+        this.frameBuffer[pixelHeight][pixelWidth] ^= 1
       }
     }
+    this.drawBuffer()
+    return pixelCollision
   }
 }

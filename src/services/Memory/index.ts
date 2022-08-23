@@ -17,13 +17,13 @@ export default class Memory {
   }
 
 
-  private setMemory (index : number, value : number) {
+  public setMemory (index : number, value : number) {
     this.assertMemory(index)
     this.memory[index] = value
   }
 
 
-  private getMemory (index : number) {
+  public getMemory (index : number) {
     this.assertMemory(index)
     return this.memory[index]
   }
