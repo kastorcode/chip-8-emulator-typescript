@@ -29,7 +29,7 @@ export default class Memory {
   }
 
 
-  private getOpcode (index : number) {
+  public getOpcode (index : number) {
     const highByte = this.getMemory(index)
     const lowByte = this.getMemory(index + 1)
     return (highByte << 8) | lowByte

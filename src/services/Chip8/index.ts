@@ -10,10 +10,14 @@ export default class Chip8 {
   public soundCard : SoundCard
   private disassembler : Disassembler
   private display : Display
+  private isRunning : boolean
+  private isPaused : boolean
 
 
   constructor (romBuffer : Uint8Array) {
     console.log('Create a new Chip-8')
+    this.isRunning = true
+    this.isPaused = false
     this.memory = new Memory()
     this.registers = new Registers()
     this.loadCharSet()
@@ -22,10 +26,63 @@ export default class Chip8 {
     this.soundCard = new SoundCard()
     this.disassembler = new Disassembler()
     this.display = new Display(this.memory.memory)
+    this.loop()
+    console.log('Success! Powered by <kastor.code/>')
   }
 
 
-  public sleep (ms = REGISTERS.TIMER_60_HZ) {
+  public static async start (file : string | File) {
+    let rom = null
+    if (typeof file === 'string') {
+      rom = await fetch(file)
+      rom = await rom.arrayBuffer()
+    }
+    else {
+      rom = await file.arrayBuffer()
+    }
+    globalThis.chip8 = new Chip8(new Uint8Array(rom))
+  }
+
+
+  private async loop () {
+    while (this.isRunning) {
+      await this.sleep()
+      if (this.isPaused) {
+        continue
+      }
+      if (this.registers.DT > 0) {
+        this.registers.DT--
+      }
+      if (this.registers.ST > 0) {
+        this.soundCard.enableSound()
+        this.registers.ST--
+      }
+      if (this.registers.ST == 0) {
+        this.soundCard.disableSound()
+      }
+      this.execute(this.memory.getOpcode(this.registers.PC))
+    }
+    globalThis.chip8 = null
+  }
+
+
+  private pause () {
+    this.isPaused = true
+  }
+
+
+  private togglePause () {
+    this.isPaused = !this.isPaused
+  }
+
+
+  private stop () {
+    this.isPaused = true
+    this.isRunning = false
+  }
+
+
+  public sleep (ms = REGISTERS.TIMER_120_HZ) {
     return new Promise(resolve => setTimeout(resolve, ms))
   }
 
@@ -45,8 +102,9 @@ export default class Chip8 {
   }
 
 
-  private async execute (opcode : number) {
+  public async execute (opcode : number) {
     const { instruction, args } = this.disassembler.disassemble(opcode)
+    this.registers.PC += 2
     switch (instruction.id) {
       case 'CLS': {
         this.display.reset()

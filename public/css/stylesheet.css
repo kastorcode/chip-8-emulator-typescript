@@ -1,0 +1,161 @@
+@import url('https://fonts.googleapis.com/css2?family=League+Gothic&family=Silkscreen:wght@400;700&display=swap');
+
+* {
+  align-items: center;
+  justify-content: center;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  border: 0;
+  font-family: 'Silkscreen', cursive;
+  font-size: 16px;
+  color: #f8f8f2;
+}
+
+html, body {
+  width: 100%;
+  height: 100%;
+}
+
+body {
+  background-color: #282a36;
+}
+
+button, input[type=color] {
+  min-width: 64px;
+  min-height: 32px;
+  padding: 0px 8px;
+  border-radius: 2px;
+  background-image: linear-gradient(#9bfda8, #7bfc92, #50fa7b, #46cc66, #3c9f52);
+  color: #172919;
+}
+
+button:hover, input[type=color]:hover {
+  cursor: pointer;
+}
+
+button:active, input[type=color]:active {
+  color: #30753e;
+  transform: translate(1px, 1px);
+}
+
+canvas {
+  display: none;
+  box-shadow: 0px 0px 32px 8px #000000;
+}
+
+#header {
+  position: absolute;
+  left: 0;
+  top: 0;
+  display: flex;
+  width: 100%;
+  background-color: #44475a;
+  padding: 16px;
+  border-color: #ff79c6;
+  border-bottom-width: 2px;
+  border-bottom-style: dotted;
+  opacity: 1;
+  transition: opacity 2s;
+}
+
+#header:hover {
+  opacity: 1 !important;
+  transition: opacity 0.2s;
+}
+
+#header span {
+  font-size: 32px;
+  font-weight: bold;
+  text-shadow: 4px 2px 0px #000, 5px 3px 0px #000, 6px 4px 0px #000;
+}
+
+#canvas {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  min-height: 100%;
+}
+
+#file {
+  display: flex;
+  flex-direction: column;
+  background-color: #4c4c4b;
+  border: 8px dashed;
+  box-shadow: 0px 0px 32px 8px #000000;
+}
+
+#file :hover {
+  cursor: pointer;
+}
+
+#file input {
+  width: 100%;
+  height: 100%;
+  padding: 32px 32px 16px 32px;
+  text-align: center;
+}
+
+#file label {
+  width: 100%;
+  height: 100%;
+  padding: 16px 32px 32px 32px;
+  text-align: center;
+}
+
+#file select {
+  display: flex;
+  width: 90%;
+  height: 100%;
+  padding: 16px 32px 32px 32px;
+  text-align: center;
+  background-color: transparent;
+}
+
+#file option {
+  background-color: #f8f8f2;
+  color: #4c4c4b;
+}
+
+#buttons {
+  display: flex;
+  width: 100%;
+  align-items: flex-start;
+  margin-bottom: 64px;
+}
+
+#buttons .box {
+  display: flex;
+  width: 100%;
+  max-width: 640px;
+  justify-content: space-between;
+}
+
+#buttons .buttons-box {
+  display: flex;
+}
+
+#buttons .buttons-box :not(:last-child) {
+  margin-right: 16px;
+}
+
+#footer {
+  display: flex;
+  width: 100%;
+  background-color: #44475a;
+  padding: 8px;
+  border-color: #ff79c6;
+  border-top-width: 2px;
+  border-top-style: dotted;
+}
+
+#footer a {
+  padding: 8px;
+  font-weight: bold;
+  text-decoration: none;
+}
+
+#footer a:hover {
+  cursor: pointer;
+  color: #ff79c6;
+}

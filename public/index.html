@@ -2,17 +2,147 @@
 <html lang="en">
 
 <head>
-  <meta charset="UTF-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Document</title>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>CHIP-8 Emulator | Powered by &lt;kastor.code/&gt;</title>
+  <link rel="icon" type="image/x-icon" href="images/favicon.png" />
+  <link rel="stylesheet" type="text/css" href="css/stylesheet.css" />
+  <meta name="keywords" content="chip-8, chip8, chip, emulator, web, browser, online, typescript, javascript, ts, js, github, git, hub, kastor.code, kastorcode, kastor, code, matheus, ramalho, oliveira" />
+  <meta name="description" content="CHIP-8 emulator that runs on a browser developed by kastorcode" />
+  <meta name="author" content="Matheus Ramalho de Oliveira" />
 </head>
 
 <body>
-  <main>
-    <canvas></canvas>
-  </main>
+  <div id="header">
+    <span>CHIP-8 EMULATOR</span>
+  </div>
+  <div id="canvas">
+    <div id="file" onDragOver="allowDrop(event)" ondrop="onGetFile(event)">
+      <input id="input-file" type="file" oninput="onGetFile(event)" />
+      <label for="input-file">DRAG AND DROP A CH8 FILE</label>
+      <select oninput="onGetFile(event)">
+        <option disabled selected>SELECT A ROM</option>
+        <option value="roms/pong.ch8">Pong</option>
+        <option value="roms/test-opcode.ch8">Test Opcode</option>
+      </select>
+    </div>
+    <canvas onclick="togglePause()"></canvas>
+  </div>
+  <div id="buttons">
+    <div class="box">
+      <div class="buttons-box">
+        <button onclick="togglePause()">PAUSE</button>
+        <button onclick="stop()">STOP</button>
+        <button onclick="fullscreen()">FULL SCREEN</button>
+      </div>
+      <div class="buttons-box">
+        <input
+          type="color" value="#33ff66"
+          onchange="(() => chip8 && chip8.display.setColors(this.value))()"
+        />
+        <button onclick="(() => chip8 && chip8.display.resetColors())()">RESET</button>
+      </div>
+    </div>
+  </div>
+  <div id="footer">
+    <a href="https://github.com/kastorcode/chip-8-emulator-typescript" target="_blank">
+      &lt;kastor.code/&gt;
+    </a>
+  </div>
   <script src="./js/chip8.bundle.js"></script>
+  <script>
+    window.onblur = function () {
+      pause()
+    }
+
+
+    function allowDrop (event) {
+      event.preventDefault()
+    }
+
+
+    function fullscreen () {
+      if (!chip8) {
+        return
+      }
+      const canvas = document.getElementsByTagName('canvas')[0]
+      if (canvas.webkitRequestFullScreen) {
+        canvas.webkitRequestFullScreen()
+      }
+      else if (canvas.mozRequestFullScreen) {
+        canvas.mozRequestFullScreen()
+      }
+    }
+
+
+    function onGetFile (event) {
+      event.preventDefault()
+      if (chip8) {
+        return
+      }
+      const file = (() => {
+        if (event.dataTransfer) {
+          return event.dataTransfer.items[0].getAsFile()
+        }
+        else if (event.target.files) {
+          return event.target.files[0]
+        }
+        else if (event.target.value) {
+          return event.target.value
+        }
+        return null
+      })()
+      if (!file) {
+        return
+      }
+      if (typeof file !== 'string' && file.name.split('.').pop().toLowerCase() !== 'ch8') {
+        return
+      }
+      window.scrollTo(0, 0)
+      onGetFileDOMeffects()
+      Chip8.start(file)
+    }
+
+
+    function onGetFileDOMeffects () {
+      document.getElementById('header').style = 'opacity:0;'
+      document.getElementById('file').style = 'display:none;'
+      document.getElementsByTagName('canvas')[0].style = 'display:flex;'
+    }
+
+
+    function revertDOMeffects () {
+      document.getElementById('header').style = 'opacity:1;'
+      document.getElementById('file').style = 'display:flex;'
+      document.getElementsByTagName('canvas')[0].style = 'display:none;'
+    }
+
+
+    function pause () {
+      if (!chip8) {
+        return
+      }
+      chip8.pause()
+    }
+
+
+    function togglePause () {
+      if (!chip8) {
+        return
+      }
+      chip8.togglePause()
+    }
+
+
+    function stop () {
+      if (!chip8) {
+        return
+      }
+      chip8.stop()
+      revertDOMeffects()
+    }
+  </script>
 </body>
 
 </html>

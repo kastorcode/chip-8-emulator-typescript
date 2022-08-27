@@ -2,8 +2,7 @@ const DISPLAY = {
   WIDTH: 64,
   HEIGHT: 32,
   SCALE: 10,
-  BG_COLOR: '#000',
-  COLOR: '#3f6',
+  COLOR: '#33ff66',
   SPRITE_HEIGHT: 5
 }
 

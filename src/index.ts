@@ -1,28 +1,5 @@
 import { Chip8 } from '~/services'
 
 
-async function runChip8 () {
-  const rom = await fetch('./roms/test_opcode.ch8')
-  const arrayBuffer = await rom.arrayBuffer()
-  const romBuffer = new Uint8Array(arrayBuffer)
-  const chip8 = new Chip8(romBuffer)
-  document['chip8'] = chip8
-  while (true) {
-    await chip8.sleep(200)
-    if (chip8.registers.DT > 0) {
-      await chip8.sleep()
-      chip8.registers.DT--
-    }
-    if (chip8.registers.ST > 0) {
-      chip8.soundCard.enableSound()
-      await chip8.sleep()
-      chip8.registers.ST--
-    }
-    if (chip8.registers.ST == 0) {
-      chip8.soundCard.disableSound()
-    }
-  }
-}
-
-
-runChip8()
+globalThis.chip8 = null
+globalThis.Chip8 = Chip8

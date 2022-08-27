@@ -6,6 +6,8 @@ export default class Display {
   private screen : HTMLCanvasElement | null
   private context : CanvasRenderingContext2D
   private frameBuffer : number[][]
+  private bgColor : string
+  private color : string
 
 
   constructor (memory : Uint8Array) {
@@ -16,6 +18,7 @@ export default class Display {
     this.screen.height = DISPLAY.HEIGHT * DISPLAY.SCALE
     this.context = this.screen.getContext('2d')
     this.frameBuffer = []
+    this.resetColors()
     this.reset()
   }
 
@@ -27,7 +30,7 @@ export default class Display {
         this.frameBuffer[h].push(0)
       }
     }
-    this.context.fillStyle = DISPLAY.BG_COLOR
+    this.context.fillStyle = this.bgColor
     this.context.fillRect(0, 0, this.screen.width, this.screen.height)
   }
 
@@ -43,7 +46,7 @@ export default class Display {
 
   private drawPixel (h : number, w : number, value : number) {
     this.context.fillStyle = value
-      ? DISPLAY.COLOR : DISPLAY.BG_COLOR
+      ? this.color : this.bgColor
     this.context.fillRect(
       w * DISPLAY.SCALE, h * DISPLAY.SCALE, DISPLAY.SCALE, DISPLAY.SCALE
     )
@@ -70,5 +73,27 @@ export default class Display {
     }
     this.drawBuffer()
     return pixelCollision
+  }
+
+
+  private resetColors () {
+    this.setColors(DISPLAY.COLOR)
+  }
+
+
+  private setColors (color : string) {
+    const tinycolor = require('tinycolor2')
+    let bgColor = tinycolor(color)
+    let fgColor = tinycolor(color)
+    if (fgColor.isLight()) {
+      bgColor = bgColor.desaturate(50)
+      bgColor = bgColor.darken(50)
+    }
+    else {
+      bgColor = bgColor.saturate(50)
+      bgColor = bgColor.lighten(50)
+    }
+    this.bgColor = bgColor.toString()
+    this.color = fgColor.toString()
   }
 }

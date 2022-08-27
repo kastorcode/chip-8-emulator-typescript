@@ -2,6 +2,11 @@ import { INSTRUCTION_SET } from '~/constants'
 
 
 export default class Disassembler {
+  constructor () {
+    console.log('Create a new Disassembler')
+  }
+
+
   public disassemble (opcode : number) {
     const instruction = INSTRUCTION_SET.INSTRUCTIONS.find(
       ({ mask, pattern }) => (opcode & mask) === pattern

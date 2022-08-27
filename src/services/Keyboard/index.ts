@@ -6,6 +6,7 @@ export default class Keyboard {
 
 
   constructor () {
+    console.log('Create a new Keyboard')
     this.keys = new Array(KEYBOARD.KEYS_TOTAL).fill(false)
     document.addEventListener('keydown', event => this.keydown(event))
     document.addEventListener('keyup', event => this.keyup(event))
