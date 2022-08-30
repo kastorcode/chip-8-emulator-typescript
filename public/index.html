@@ -21,10 +21,8 @@
     <div id="file" onDragOver="allowDrop(event)" ondrop="onGetFile(event)">
       <input id="input-file" type="file" oninput="onGetFile(event)" />
       <label for="input-file">DRAG AND DROP A CH8 FILE</label>
-      <select oninput="onGetFile(event)">
-        <option disabled selected>SELECT A ROM</option>
-        <option value="roms/pong.ch8">Pong</option>
-        <option value="roms/test-opcode.ch8">Test Opcode</option>
+      <select id="select-rom" oninput="onGetFile(event)">
+        <option id="option-rom" disabled selected>SELECT A ROM</option>
       </select>
     </div>
     <canvas onclick="togglePause()"></canvas>
@@ -35,16 +33,24 @@
         <button onclick="togglePause()">PAUSE</button>
         <button onclick="stop()">STOP</button>
         <button onclick="fullscreen()">FULL SCREEN</button>
+        <select oninput="setTimer(event)">
+          <option value="HZ15">15HZ</option>
+          <option value="HZ30">30HZ</option>
+          <option value="HZ60">60HZ</option>
+          <option id="HZ120" value="HZ120" selected>120HZ</option>
+          <option value="HZ240">240HZ</option>
+        </select>
       </div>
       <div class="buttons-box">
         <input
-          type="color" value="#33ff66"
+          id="input-color" type="color" value="#33ff66"
           onchange="(() => chip8 && chip8.display.setColors(this.value))()"
         />
         <button onclick="(() => chip8 && chip8.display.resetColors())()">RESET</button>
       </div>
     </div>
   </div>
+  <div id="rom-info"></div>
   <div id="footer">
     <a href="https://github.com/kastorcode/chip-8-emulator-typescript" target="_blank">
       &lt;kastor.code/&gt;
@@ -54,6 +60,11 @@
   <script>
     window.onblur = function () {
       pause()
+    }
+
+
+    window.onload = function () {
+      getChip8RomList()
     }
 
 
@@ -73,6 +84,14 @@
       else if (canvas.mozRequestFullScreen) {
         canvas.mozRequestFullScreen()
       }
+    }
+
+
+    function setTimer (event) {
+      if (!chip8) {
+        return
+      }
+      chip8.setTimer(event.target.value)
     }
 
 
@@ -96,7 +115,10 @@
       if (!file) {
         return
       }
-      if (typeof file !== 'string' && file.name.split('.').pop().toLowerCase() !== 'ch8') {
+      if (typeof file === 'string') {
+        getRomInfo(file)
+      }
+      else if (file.name.split('.').pop().toLowerCase() !== 'ch8') {
         return
       }
       window.scrollTo(0, 0)
@@ -105,10 +127,17 @@
     }
 
 
+    function applyDefaultSettings () {
+      document.getElementById('HZ120').selected = true
+      document.getElementById('input-color').value = '#33ff66'
+    }
+
+
     function onGetFileDOMeffects () {
       document.getElementById('header').style = 'opacity:0;'
       document.getElementById('file').style = 'display:none;'
       document.getElementsByTagName('canvas')[0].style = 'display:flex;'
+      applyDefaultSettings()
     }
 
 
@@ -116,6 +145,10 @@
       document.getElementById('header').style = 'opacity:1;'
       document.getElementById('file').style = 'display:flex;'
       document.getElementsByTagName('canvas')[0].style = 'display:none;'
+      document.getElementById('input-file').value = ''
+      document.getElementById('option-rom').selected = true
+      document.getElementById('rom-info').innerText = ''
+      applyDefaultSettings()
     }
 
 
@@ -141,6 +174,43 @@
       }
       chip8.stop()
       revertDOMeffects()
+    }
+
+
+    async function getChip8RomList () {
+      let response = await fetch('https://api.github.com/repos/kripod/chip8-roms/contents')
+      response = await response.json()
+      response = response.filter(({ type }) => type === 'dir')
+      response = await Promise.all(response.map(async ({ url }) => {
+        let files = await fetch(url)
+        files = await files.json()
+        files = files.filter(({ name }) => name.split('.').pop().toLowerCase() === 'ch8')
+        return files
+      }))
+      const documentFragment = document.createDocumentFragment()
+      for (const i in response) {
+        for (const j in response[i]) {
+          const option = document.createElement('option')
+          option.value = response[i][j].download_url
+          option.text = response[i][j].name
+          documentFragment.appendChild(option)
+        }
+      }
+      document.getElementById('select-rom').appendChild(documentFragment)
+    }
+
+
+    async function getRomInfo (ch8) {
+      try {
+        let response = await fetch(ch8.replace(/\.ch8/i, '.txt'))
+        if (response.status === 200) {
+          response = await response.text()
+          document.getElementById('rom-info').innerText = response
+        }
+      }
+      catch (error) {
+        console.error(error)
+      }
     }
   </script>
 </body>

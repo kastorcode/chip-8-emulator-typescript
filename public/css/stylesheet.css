@@ -21,7 +21,7 @@ body {
   background-color: #282a36;
 }
 
-button, input[type=color] {
+button, input[type=color], #buttons select {
   min-width: 64px;
   min-height: 32px;
   padding: 0px 8px;
@@ -30,11 +30,11 @@ button, input[type=color] {
   color: #172919;
 }
 
-button:hover, input[type=color]:hover {
+button:hover, input[type=color]:hover, #buttons select:hover {
   cursor: pointer;
 }
 
-button:active, input[type=color]:active {
+button:active, input[type=color]:active, #buttons select:active {
   color: #30753e;
   transform: translate(1px, 1px);
 }
@@ -42,6 +42,11 @@ button:active, input[type=color]:active {
 canvas {
   display: none;
   box-shadow: 0px 0px 32px 8px #000000;
+}
+
+option {
+  background-color: #f8f8f2;
+  color: #4c4c4b;
 }
 
 #header {
@@ -112,16 +117,9 @@ canvas {
   background-color: transparent;
 }
 
-#file option {
-  background-color: #f8f8f2;
-  color: #4c4c4b;
-}
-
 #buttons {
   display: flex;
   width: 100%;
-  align-items: flex-start;
-  margin-bottom: 64px;
 }
 
 #buttons .box {
@@ -137,6 +135,11 @@ canvas {
 
 #buttons .buttons-box :not(:last-child) {
   margin-right: 16px;
+}
+
+#rom-info {
+  display: flex;
+  padding: 64px 16px;
 }
 
 #footer {

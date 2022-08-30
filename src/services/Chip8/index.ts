@@ -1,5 +1,7 @@
 import { CHAR_SET, DISPLAY, MEMORY, REGISTERS } from '~/constants'
 
+import { iREGISTERS } from '~/constants/Registers'
+
 import { Disassembler, Display, Keyboard, Memory, Registers, SoundCard } from '~/services'
 
 
@@ -12,12 +14,14 @@ export default class Chip8 {
   private display : Display
   private isRunning : boolean
   private isPaused : boolean
+  private timer : number
 
 
   constructor (romBuffer : Uint8Array) {
     console.log('Create a new Chip-8')
     this.isRunning = true
     this.isPaused = false
+    this.timer = REGISTERS.HZ120
     this.memory = new Memory()
     this.registers = new Registers()
     this.loadCharSet()
@@ -82,8 +86,15 @@ export default class Chip8 {
   }
 
 
-  public sleep (ms = REGISTERS.TIMER_120_HZ) {
+  public sleep (ms = this.timer) {
     return new Promise(resolve => setTimeout(resolve, ms))
+  }
+
+
+  private setTimer (key : keyof iREGISTERS) {
+    if (typeof REGISTERS[key] === 'number') {
+      this.timer = REGISTERS[key]
+    }
   }
 
 
