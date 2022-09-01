@@ -1,14 +1,14 @@
 {
-  "name": "chip-8-emulator",
+  "name": "chip-8-emulator-typescript",
   "version": "1.0.0",
-  "description": "",
+  "description": "CHIP-8 emulator that runs on a browser developed by kastorcode",
   "main": "./src/index.ts",
   "scripts": {
     "build": "webpack --watch",
     "git": "git add . && git commit && git push"
   },
-  "keywords": [],
-  "author": "",
+  "keywords": ["chip-8", "chip8", "chip", "emulator", "web", "browser", "online", "typescript", "javascript", "ts", "js", "github", "git", "hub", "kastor.code", "kastorcode", "kastor", "code", "matheus", "ramalho", "oliveira"],
+  "author": "Matheus Ramalho de Oliveira",
   "license": "ISC",
   "dependencies": {
     "tinycolor2": "^1.4.2"
