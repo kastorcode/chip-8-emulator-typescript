@@ -114,10 +114,11 @@ var Chip8 = /** @class */ (function () {
     };
     Chip8.prototype.loop = function () {
         return __awaiter(this, void 0, void 0, function () {
+            var i;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
-                        if (!this.isRunning) return [3 /*break*/, 3];
+                        if (!this.isRunning) return [3 /*break*/, 6];
                         return [4 /*yield*/, this.sleep()];
                     case 1:
                         _a.sent();
@@ -134,11 +135,19 @@ var Chip8 = /** @class */ (function () {
                         if (this.registers.ST == 0) {
                             this.soundCard.disableSound();
                         }
-                        return [4 /*yield*/, this.execute(this.memory.getOpcode(this.registers.PC))];
+                        i = 0;
+                        _a.label = 2;
                     case 2:
-                        _a.sent();
-                        return [3 /*break*/, 0];
+                        if (!(i < 8)) return [3 /*break*/, 5];
+                        return [4 /*yield*/, this.execute(this.memory.getOpcode(this.registers.PC))];
                     case 3:
+                        _a.sent();
+                        _a.label = 4;
+                    case 4:
+                        i++;
+                        return [3 /*break*/, 2];
+                    case 5: return [3 /*break*/, 0];
+                    case 6:
                         globalThis.chip8 = null;
                         return [2 /*return*/];
                 }
@@ -947,11 +956,11 @@ exports.__esModule = true;
 var REGISTERS = {
     TOTAL: 16,
     STACK_DEEP: 16,
-    HZ15: 1000 / 15,
-    HZ30: 1000 / 30,
-    HZ60: 1000 / 60,
-    HZ120: 1000 / 120,
-    HZ240: 1000 / 240
+    HZ15: Math.floor(1000 / 15),
+    HZ30: Math.floor(1000 / 30),
+    HZ60: Math.floor(1000 / 60),
+    HZ120: Math.floor(1000 / 120),
+    HZ240: Math.floor(1000 / 240)
 };
 exports["default"] = REGISTERS;
 

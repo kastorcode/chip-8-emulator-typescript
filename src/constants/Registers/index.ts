@@ -12,11 +12,11 @@ export interface iREGISTERS {
 const REGISTERS : iREGISTERS = {
   TOTAL: 16,
   STACK_DEEP: 16,
-  HZ15: 1000 / 15,
-  HZ30: 1000 / 30,
-  HZ60: 1000 / 60,
-  HZ120: 1000 / 120,
-  HZ240: 1000 / 240
+  HZ15: Math.floor(1000 / 15),
+  HZ30: Math.floor(1000 / 30),
+  HZ60: Math.floor(1000 / 60),
+  HZ120: Math.floor(1000 / 120),
+  HZ240: Math.floor(1000 / 240)
 }
 
 

@@ -64,7 +64,9 @@ export default class Chip8 {
       if (this.registers.ST == 0) {
         this.soundCard.disableSound()
       }
-      await this.execute(this.memory.getOpcode(this.registers.PC))
+      for (let i = 0; i < 8; i++) {
+        await this.execute(this.memory.getOpcode(this.registers.PC))
+      }
     }
     globalThis.chip8 = null
   }
