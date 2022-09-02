@@ -1,2 +1,3 @@
+.fuse_hidden*
 node_modules
 yarn.lock

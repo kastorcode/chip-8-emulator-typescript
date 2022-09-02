@@ -17,17 +17,19 @@ export default class Display {
     this.screen.width = DISPLAY.WIDTH * DISPLAY.SCALE
     this.screen.height = DISPLAY.HEIGHT * DISPLAY.SCALE
     this.context = this.screen.getContext('2d')
-    this.frameBuffer = []
     this.resetColors()
+    this.frameBuffer = []
+    for (let h = 0; h < DISPLAY.HEIGHT; h++) {
+      this.frameBuffer.push([])
+    }
     this.reset()
   }
 
 
   public reset () {
     for (let h = 0; h < DISPLAY.HEIGHT; h++) {
-      this.frameBuffer.push([])
       for (let w = 0; w < DISPLAY.WIDTH; w++) {
-        this.frameBuffer[h].push(0)
+        this.frameBuffer[h][w] = 0
       }
     }
     this.context.fillStyle = this.bgColor

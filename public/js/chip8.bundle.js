@@ -117,7 +117,7 @@ var Chip8 = /** @class */ (function () {
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
-                        if (!this.isRunning) return [3 /*break*/, 2];
+                        if (!this.isRunning) return [3 /*break*/, 3];
                         return [4 /*yield*/, this.sleep()];
                     case 1:
                         _a.sent();
@@ -134,9 +134,11 @@ var Chip8 = /** @class */ (function () {
                         if (this.registers.ST == 0) {
                             this.soundCard.disableSound();
                         }
-                        this.execute(this.memory.getOpcode(this.registers.PC));
-                        return [3 /*break*/, 0];
+                        return [4 /*yield*/, this.execute(this.memory.getOpcode(this.registers.PC))];
                     case 2:
+                        _a.sent();
+                        return [3 /*break*/, 0];
+                    case 3:
                         globalThis.chip8 = null;
                         return [2 /*return*/];
                 }
@@ -1014,15 +1016,17 @@ var Display = /** @class */ (function () {
         this.screen.width = constants_1.DISPLAY.WIDTH * constants_1.DISPLAY.SCALE;
         this.screen.height = constants_1.DISPLAY.HEIGHT * constants_1.DISPLAY.SCALE;
         this.context = this.screen.getContext('2d');
-        this.frameBuffer = [];
         this.resetColors();
+        this.frameBuffer = [];
+        for (var h = 0; h < constants_1.DISPLAY.HEIGHT; h++) {
+            this.frameBuffer.push([]);
+        }
         this.reset();
     }
     Display.prototype.reset = function () {
         for (var h = 0; h < constants_1.DISPLAY.HEIGHT; h++) {
-            this.frameBuffer.push([]);
             for (var w = 0; w < constants_1.DISPLAY.WIDTH; w++) {
-                this.frameBuffer[h].push(0);
+                this.frameBuffer[h][w] = 0;
             }
         }
         this.context.fillStyle = this.bgColor;
